@@ -65,7 +65,7 @@ calculado desde el cliente es un total en el que no se puede confiar:
 ## Qué necesita la app consumidora
 
 Verificado consumiendo `clientes` desde `template-app` de punta a punta.
-Sin estas tres cosas el build falla:
+Sin las cuatro, o el build falla o la app se ve rota:
 
 1. **`transpilePackages` en `next.config.ts`:**
 
