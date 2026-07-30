@@ -56,12 +56,14 @@ lugar de código.
 4. Escribe `types.ts` y `lib/<slug>-db.ts`.
 5. Escribe `actions.ts` con la verificación de permisos por acción.
 6. Arma la UI en `components/Panel.tsx`.
-7. Documenta en el `README.md` del módulo de dónde salió y qué decisiones
-   de desacople se tomaron — igual que `modules/clientes/README.md`.
+7. Documenta en el `README.md` del módulo: qué hace, cómo se instala en
+   una app cliente (el SQL a correr, cómo se importa), qué requiere del
+   `core`, y sus campos. Nada de crónica de decisiones — eso va en el
+   commit, no en el README que alguien lee para usar el módulo. Mira
+   `modules/clientes/README.md` como formato.
 
 ## Referencia viva
 
-El módulo `clientes` implementa todo el contrato con código real, y su
-`README.md` documenta el caso completo: dos fuentes, un bug de permisos
-corregido, campos recortados a lo mínimo probado. Cuando dudes de cómo
-hacer algo, mira ese caso primero.
+El módulo `clientes` implementa todo el contrato con código real. Cuando
+dudes de cómo hacer algo — la forma del `schema.sql`, cómo se ve un
+`actions.ts` con permisos, el formato del README — mira ese módulo primero.

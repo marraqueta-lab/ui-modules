@@ -2,42 +2,42 @@
 
 Ficha de clientes de la pyme: datos de contacto y notas.
 
-## Origen
+## Qué hace
 
-Extraído comparando dos implementaciones reales e independientes:
+- Listar los clientes activos de la empresa.
+- Crear, editar y dar de baja (baja lógica — no borra la fila).
+- Verifica el permiso por rol en el servidor antes de cada acción.
 
-- **`la-casa-de-las-nueces`**: campos simples (nombre, teléfono, dirección,
-  notas), probados en uso real, pero sin `empresa_id` — la app fue
-  construida single-tenant a propósito ("uso interno familiar").
-- **`marraqueta-kit` (Tomás)**: traía el shape de tenancy correcto
-  (`empresa_id` + RLS por `perfiles`), pero con un bug real: la matriz de
-  permisos por rol (`puede()`) nunca se llamaba desde `actions.ts` — un
-  usuario `solo_lectura` podía invocar el Server Action de borrado
-  directamente.
+## Instalación en una app cliente
 
-Este módulo toma el patrón de tenancy de Tomás, el set de campos mínimo de
-Nueces (no se agregó `rut`/`email`/`tipo` porque ningún cliente real los ha
-pedido todavía — se agregan cuando alguno lo pida, no antes), y corrige el
-bug: `actions.ts` verifica el permiso en el servidor antes de ejecutar,
-en vez de solo esconder el botón en la UI.
+1. Corre `schema.sql` en el SQL Editor de Supabase, después del esquema
+   base (`empresas` + `perfiles`).
+2. Importa el panel y la función de listado en la página del dashboard:
 
-## Requiere del `core` del app consumidor
+```tsx
+import { ClientesPanel } from "@marraqueta/ui-modules/modules/clientes/components/ClientesPanel";
+import { listarClientes } from "@marraqueta/ui-modules/modules/clientes/lib/clientes-db";
 
-- `@core/supabase/server` — cliente de Supabase en servidor
+export default async function Page() {
+  const clientes = await listarClientes();
+  return <ClientesPanel clientes={clientes} />;
+}
+```
+
+## Requiere del `core` de la app consumidora
+
+- `@core/supabase/server`
 - `@core/multi-empresa/empresa` — `empresaActivaId()`
 - `@core/auth/session` — `getPerfil()`
 - `@core/auth/roles` — `puede()`
 
-## Instalación en un cliente
+## Campos
 
-1. Corre `schema.sql` en el SQL Editor de Supabase del cliente, después del
-   esquema base (`empresas` + `perfiles`).
-2. Importa `ClientesPanel` desde `modules/clientes/components/ClientesPanel`
-   en la página del dashboard que corresponda, pasándole
-   `await listarClientes()` como prop.
+| Campo | Tipo | Notas |
+|---|---|---|
+| `nombre` | text | obligatorio |
+| `telefono` | text | opcional |
+| `direccion` | text | opcional |
+| `notas` | text | opcional |
 
-## Baja lógica
-
-`desactivarCliente` marca `activo = false`, nunca borra la fila — un
-cliente puede tener pedidos asociados y perder ese historial sería peor
-que dejarlo inactivo.
+Sin `rut` / `email` / `tipo` — se agregan si un cliente concreto los pide.
