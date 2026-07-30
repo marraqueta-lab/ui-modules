@@ -6,7 +6,7 @@ la consume como dependencia, fijada a un tag específico — nunca a `main`.
 ```json
 {
   "dependencies": {
-    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.1.1"
+    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.2.0"
   }
 }
 ```
@@ -28,9 +28,29 @@ infraestructura del proyecto.
 
 ## Módulos disponibles
 
-| Módulo | Qué hace | Origen |
+| Módulo | Qué hace | Requiere |
 |---|---|---|
-| [`clientes`](modules/clientes) | Ficha de clientes: contacto y notas | la-casa-de-las-nueces + marraqueta-kit |
+| [`clientes`](modules/clientes) | Ficha de clientes: contacto y notas | — |
+| [`productos`](modules/productos) | Catálogo de lo que vende la pyme | — |
+| [`ingredientes`](modules/ingredientes) | Materias primas: unidad, precio y stock | — |
+| [`compras`](modules/compras) | Compras de insumos; actualiza el precio del ingrediente | `ingredientes` |
+| [`stock`](modules/stock) | Conteos periódicos de inventario | `ingredientes` |
+| [`recetas`](modules/recetas) | Composición de un producto y su costo | `productos`, `ingredientes` |
+| [`pedidos`](modules/pedidos) | Pedidos de clientes con líneas y total | `clientes`, `productos` |
+
+Los `schema.sql` se corren en orden de dependencia: primero los módulos sin
+requisitos, después los que dependen de ellos.
+
+### Cálculos que hace la base, no la app
+
+Varios módulos delegan totales a Postgres a propósito — un total que llega
+calculado desde el cliente es un total en el que no se puede confiar:
+
+- `compras.precio_unit` — columna generada (`precio_total / cantidad`).
+- `pedido_items.subtotal` — columna generada (`cantidad x precio_unit`).
+- `pedidos.total` — trigger que suma las líneas ante cualquier cambio.
+- `ingredientes.precio_unit` — trigger desde la última compra.
+- `ingredientes.stock` — trigger desde el último conteo.
 
 ## Qué NO trae
 
