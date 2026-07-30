@@ -33,18 +33,18 @@ export function IngredientesPanel({ ingredientes }: { ingredientes: Ingrediente[
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Ingredientes</h1>
-          <p className="text-sm text-neutral-500">Materias primas y su stock actual.</p>
+          <p className="text-sm text-muted-foreground">Materias primas y su stock actual.</p>
         </div>
         <button
           onClick={() => setForm({ ...VACIO })}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground"
         >
           + Nuevo ingrediente
         </button>
       </div>
 
       {form && (
-        <div className="rounded-lg border border-neutral-200 p-4">
+        <div className="rounded-lg border border-border p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
             <Campo label="Nombre" value={form.nombre} onChange={(v) => setForm({ ...form, nombre: v })} />
             <Campo label="Unidad" value={form.unidad} onChange={(v) => setForm({ ...form, unidad: v })} />
@@ -65,24 +65,24 @@ export function IngredientesPanel({ ingredientes }: { ingredientes: Ingrediente[
             <button
               onClick={guardar}
               disabled={pending || !form.nombre || !form.unidad}
-              className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+              className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
             >
               {pending ? "Guardando…" : "Guardar"}
             </button>
-            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-neutral-500">
+            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-muted-foreground">
               Cancelar
             </button>
           </div>
         </div>
       )}
 
-      <div className="rounded-lg border border-neutral-200">
+      <div className="rounded-lg border border-border">
         {ingredientes.length === 0 ? (
-          <p className="py-8 text-center text-sm text-neutral-500">Aún no hay ingredientes.</p>
+          <p className="py-8 text-center text-sm text-muted-foreground">Aún no hay ingredientes.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral-200 text-left text-neutral-500">
+              <tr className="border-b border-border text-left text-muted-foreground">
                 <th className="px-4 py-2">Nombre</th>
                 <th>Unidad</th>
                 <th className="text-right">Precio unit.</th>
@@ -92,18 +92,18 @@ export function IngredientesPanel({ ingredientes }: { ingredientes: Ingrediente[
             </thead>
             <tbody>
               {ingredientes.map((i) => (
-                <tr key={i.id} className="border-b border-neutral-100">
+                <tr key={i.id} className="border-b border-border/60">
                   <td className="px-4 py-2 font-medium">{i.nombre}</td>
-                  <td className="text-neutral-500">{i.unidad}</td>
+                  <td className="text-muted-foreground">{i.unidad}</td>
                   <td className="text-right">{i.precio_unit}</td>
                   <td className="text-right">{i.stock}</td>
                   <td className="px-4 text-right">
-                    <button onClick={() => editar(i)} className="text-amber-700 hover:underline">
+                    <button onClick={() => editar(i)} className="text-primary hover:underline">
                       Editar
                     </button>
                     <button
                       onClick={() => startTransition(() => accionDesactivarIngrediente(i.id))}
-                      className="ml-3 text-neutral-400 hover:text-red-600"
+                      className="ml-3 text-muted-foreground hover:text-destructive"
                     >
                       Eliminar
                     </button>
@@ -131,12 +131,12 @@ function Campo({
 }) {
   return (
     <label className="text-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+        className="mt-1 w-full rounded-lg border border-input px-3 py-2"
       />
     </label>
   );

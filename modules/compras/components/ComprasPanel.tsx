@@ -51,34 +51,34 @@ export function ComprasPanel({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Compras</h1>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted-foreground">
             Al registrar una compra se actualiza el precio del ingrediente.
           </p>
         </div>
         <button
           onClick={nueva}
           disabled={ingredientes.length === 0}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
         >
           + Nueva compra
         </button>
       </div>
 
       {ingredientes.length === 0 && (
-        <p className="rounded-lg border border-neutral-200 p-4 text-sm text-neutral-500">
+        <p className="rounded-lg border border-border p-4 text-sm text-muted-foreground">
           Primero crea al menos un ingrediente.
         </p>
       )}
 
       {form && (
-        <div className="rounded-lg border border-neutral-200 p-4">
+        <div className="rounded-lg border border-border p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
             <label className="text-sm sm:col-span-2">
-              <span className="text-neutral-500">Ingrediente</span>
+              <span className="text-muted-foreground">Ingrediente</span>
               <select
                 value={form.ingrediente_id}
                 onChange={(e) => elegirIngrediente(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-input px-3 py-2"
               >
                 {ingredientes.map((i) => (
                   <option key={i.id} value={i.id}>
@@ -118,24 +118,24 @@ export function ComprasPanel({
             <button
               onClick={guardar}
               disabled={pending || !valido}
-              className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+              className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
             >
               {pending ? "Guardando…" : "Registrar compra"}
             </button>
-            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-neutral-500">
+            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-muted-foreground">
               Cancelar
             </button>
           </div>
         </div>
       )}
 
-      <div className="rounded-lg border border-neutral-200">
+      <div className="rounded-lg border border-border">
         {compras.length === 0 ? (
-          <p className="py-8 text-center text-sm text-neutral-500">Aún no hay compras registradas.</p>
+          <p className="py-8 text-center text-sm text-muted-foreground">Aún no hay compras registradas.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral-200 text-left text-neutral-500">
+              <tr className="border-b border-border text-left text-muted-foreground">
                 <th className="px-4 py-2">Fecha</th>
                 <th>Ingrediente</th>
                 <th className="text-right">Cantidad</th>
@@ -145,14 +145,14 @@ export function ComprasPanel({
             </thead>
             <tbody>
               {compras.map((c) => (
-                <tr key={c.id} className="border-b border-neutral-100">
+                <tr key={c.id} className="border-b border-border/60">
                   <td className="px-4 py-2">{c.fecha}</td>
                   <td className="font-medium">{c.ingrediente?.nombre ?? "—"}</td>
                   <td className="text-right">
                     {c.cantidad} {c.unidad}
                   </td>
                   <td className="text-right">{c.precio_total}</td>
-                  <td className="px-4 text-right text-neutral-500">{c.precio_unit}</td>
+                  <td className="px-4 text-right text-muted-foreground">{c.precio_unit}</td>
                 </tr>
               ))}
             </tbody>
@@ -176,12 +176,12 @@ function Campo({
 }) {
   return (
     <label className="text-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+        className="mt-1 w-full rounded-lg border border-input px-3 py-2"
       />
     </label>
   );

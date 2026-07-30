@@ -52,34 +52,34 @@ export function PedidosPanel({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Pedidos</h1>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted-foreground">
             El total se calcula solo a partir de las líneas.
           </p>
         </div>
         <button
           onClick={nuevo}
           disabled={productos.length === 0}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
         >
           + Nuevo pedido
         </button>
       </div>
 
       {productos.length === 0 && (
-        <p className="rounded-lg border border-neutral-200 p-4 text-sm text-neutral-500">
+        <p className="rounded-lg border border-border p-4 text-sm text-muted-foreground">
           Primero crea al menos un producto.
         </p>
       )}
 
       {form && (
-        <div className="rounded-lg border border-neutral-200 p-4">
+        <div className="rounded-lg border border-border p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <label className="text-sm">
-              <span className="text-neutral-500">Cliente</span>
+              <span className="text-muted-foreground">Cliente</span>
               <select
                 value={form.cliente_id ?? ""}
                 onChange={(e) => setForm({ ...form, cliente_id: e.target.value || null })}
-                className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-input px-3 py-2"
               >
                 <option value="">Sin cliente</option>
                 {clientes.map((c) => (
@@ -97,11 +97,11 @@ export function PedidosPanel({
               onChange={(v) => setForm({ ...form, fecha_entrega: v || null })}
             />
             <label className="text-sm">
-              <span className="text-neutral-500">Estado</span>
+              <span className="text-muted-foreground">Estado</span>
               <select
                 value={form.estado}
                 onChange={(e) => setForm({ ...form, estado: e.target.value as EstadoPedido })}
-                className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-input px-3 py-2"
               >
                 {ESTADOS_PEDIDO.map((e) => (
                   <option key={e} value={e}>
@@ -117,7 +117,7 @@ export function PedidosPanel({
                 onChange={(e) => setForm({ ...form, pagado: e.target.checked })}
                 className="mb-3"
               />
-              <span className="mb-2 text-neutral-500">Pagado</span>
+              <span className="mb-2 text-muted-foreground">Pagado</span>
             </label>
             <Campo
               label="Notas"
@@ -129,11 +129,11 @@ export function PedidosPanel({
             <button
               onClick={guardar}
               disabled={pending}
-              className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+              className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
             >
               {pending ? "Guardando…" : "Guardar"}
             </button>
-            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-neutral-500">
+            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-muted-foreground">
               Cancelar
             </button>
           </div>
@@ -142,16 +142,16 @@ export function PedidosPanel({
 
       <div className="space-y-3">
         {pedidos.length === 0 ? (
-          <p className="rounded-lg border border-neutral-200 py-8 text-center text-sm text-neutral-500">
+          <p className="rounded-lg border border-border py-8 text-center text-sm text-muted-foreground">
             Aún no hay pedidos.
           </p>
         ) : (
           pedidos.map((p) => (
-            <div key={p.id} className="rounded-lg border border-neutral-200">
+            <div key={p.id} className="rounded-lg border border-border">
               <div className="flex items-center justify-between p-4">
                 <div>
                   <p className="font-medium">{p.cliente?.nombre ?? "Sin cliente"}</p>
-                  <p className="text-sm text-neutral-500">
+                  <p className="text-sm text-muted-foreground">
                     {p.fecha}
                     {p.fecha_entrega ? ` · entrega ${p.fecha_entrega}` : ""} ·{" "}
                     {ESTADO_LABEL[p.estado]}
@@ -162,7 +162,7 @@ export function PedidosPanel({
                   <p className="font-medium">${Math.round(p.total)}</p>
                   <button
                     onClick={() => setAbierto(abierto === p.id ? null : p.id)}
-                    className="text-amber-700 hover:underline"
+                    className="text-primary hover:underline"
                   >
                     {abierto === p.id ? "Cerrar" : "Líneas"}
                   </button>
@@ -207,20 +207,20 @@ function LineasDelPedido({
   }
 
   return (
-    <div className="border-t border-neutral-200 p-4">
+    <div className="border-t border-border p-4">
       <table className="w-full text-sm">
         <tbody>
           {(pedido.pedido_items ?? []).map((it) => (
-            <tr key={it.id} className="border-b border-neutral-100">
+            <tr key={it.id} className="border-b border-border/60">
               <td className="py-2">{it.producto?.nombre ?? "—"}</td>
-              <td className="text-right text-neutral-500">
+              <td className="text-right text-muted-foreground">
                 {it.cantidad} x ${it.precio_unit}
               </td>
               <td className="text-right">${Math.round(it.subtotal)}</td>
               <td className="text-right">
                 <button
                   onClick={() => startTransition(() => accionQuitarItem(it.id))}
-                  className="text-neutral-400 hover:text-red-600"
+                  className="text-muted-foreground hover:text-destructive"
                 >
                   Quitar
                 </button>
@@ -232,11 +232,11 @@ function LineasDelPedido({
 
       <div className="mt-3 flex items-end gap-2">
         <label className="text-sm">
-          <span className="text-neutral-500">Producto</span>
+          <span className="text-muted-foreground">Producto</span>
           <select
             value={productoId}
             onChange={(e) => setProductoId(e.target.value)}
-            className="mt-1 rounded-lg border border-neutral-300 px-3 py-2"
+            className="mt-1 rounded-lg border border-input px-3 py-2"
           >
             {productos.map((p) => (
               <option key={p.id} value={p.id}>
@@ -246,18 +246,18 @@ function LineasDelPedido({
           </select>
         </label>
         <label className="text-sm">
-          <span className="text-neutral-500">Cantidad</span>
+          <span className="text-muted-foreground">Cantidad</span>
           <input
             type="number"
             value={cantidad}
             onChange={(e) => setCantidad(e.target.value)}
-            className="mt-1 w-28 rounded-lg border border-neutral-300 px-3 py-2"
+            className="mt-1 w-28 rounded-lg border border-input px-3 py-2"
           />
         </label>
         <button
           onClick={agregar}
           disabled={pending || !cantidad}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
         >
           Agregar
         </button>
@@ -279,12 +279,12 @@ function Campo({
 }) {
   return (
     <label className="text-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+        className="mt-1 w-full rounded-lg border border-input px-3 py-2"
       />
     </label>
   );

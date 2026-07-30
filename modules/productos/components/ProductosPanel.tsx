@@ -40,18 +40,18 @@ export function ProductosPanel({ productos }: { productos: Producto[] }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Productos</h1>
-          <p className="text-sm text-neutral-500">Catálogo de lo que vende la pyme.</p>
+          <p className="text-sm text-muted-foreground">Catálogo de lo que vende la pyme.</p>
         </div>
         <button
           onClick={() => setForm({ ...VACIO })}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground"
         >
           + Nuevo producto
         </button>
       </div>
 
       {form && (
-        <div className="rounded-lg border border-neutral-200 p-4">
+        <div className="rounded-lg border border-border p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Campo label="Nombre" value={form.nombre} onChange={(v) => setForm({ ...form, nombre: v })} />
             <Campo
@@ -83,24 +83,24 @@ export function ProductosPanel({ productos }: { productos: Producto[] }) {
             <button
               onClick={guardar}
               disabled={pending || !form.nombre}
-              className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+              className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
             >
               {pending ? "Guardando…" : "Guardar"}
             </button>
-            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-neutral-500">
+            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-muted-foreground">
               Cancelar
             </button>
           </div>
         </div>
       )}
 
-      <div className="rounded-lg border border-neutral-200">
+      <div className="rounded-lg border border-border">
         {productos.length === 0 ? (
-          <p className="py-8 text-center text-sm text-neutral-500">Aún no hay productos.</p>
+          <p className="py-8 text-center text-sm text-muted-foreground">Aún no hay productos.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral-200 text-left text-neutral-500">
+              <tr className="border-b border-border text-left text-muted-foreground">
                 <th className="px-4 py-2">Nombre</th>
                 <th>Categoría</th>
                 <th className="text-right">Precio</th>
@@ -110,18 +110,18 @@ export function ProductosPanel({ productos }: { productos: Producto[] }) {
             </thead>
             <tbody>
               {productos.map((p) => (
-                <tr key={p.id} className="border-b border-neutral-100">
+                <tr key={p.id} className="border-b border-border/60">
                   <td className="px-4 py-2 font-medium">{p.nombre}</td>
-                  <td className="text-neutral-500">{p.categoria ?? "—"}</td>
+                  <td className="text-muted-foreground">{p.categoria ?? "—"}</td>
                   <td className="text-right">{p.precio}</td>
                   <td className="text-right">{p.precio_mayorista}</td>
                   <td className="px-4 text-right">
-                    <button onClick={() => editar(p)} className="text-amber-700 hover:underline">
+                    <button onClick={() => editar(p)} className="text-primary hover:underline">
                       Editar
                     </button>
                     <button
                       onClick={() => startTransition(() => accionDesactivarProducto(p.id))}
-                      className="ml-3 text-neutral-400 hover:text-red-600"
+                      className="ml-3 text-muted-foreground hover:text-destructive"
                     >
                       Eliminar
                     </button>
@@ -149,12 +149,12 @@ function Campo({
 }) {
   return (
     <label className="text-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+        className="mt-1 w-full rounded-lg border border-input px-3 py-2"
       />
     </label>
   );

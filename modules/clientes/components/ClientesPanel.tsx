@@ -31,18 +31,18 @@ export function ClientesPanel({ clientes }: { clientes: Cliente[] }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Clientes</h1>
-          <p className="text-sm text-neutral-500">Ficha de clientes de la pyme.</p>
+          <p className="text-sm text-muted-foreground">Ficha de clientes de la pyme.</p>
         </div>
         <button
           onClick={() => setForm({ ...VACIO })}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground"
         >
           + Nuevo cliente
         </button>
       </div>
 
       {form && (
-        <div className="rounded-lg border border-neutral-200 p-4">
+        <div className="rounded-lg border border-border p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Campo label="Nombre" value={form.nombre} onChange={(v) => setForm({ ...form, nombre: v })} />
             <Campo
@@ -65,26 +65,26 @@ export function ClientesPanel({ clientes }: { clientes: Cliente[] }) {
             <button
               onClick={guardar}
               disabled={pending || !form.nombre}
-              className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+              className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
             >
               {pending ? "Guardando…" : "Guardar"}
             </button>
-            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-neutral-500">
+            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-muted-foreground">
               Cancelar
             </button>
           </div>
         </div>
       )}
 
-      <div className="rounded-lg border border-neutral-200">
+      <div className="rounded-lg border border-border">
         {clientes.length === 0 ? (
-          <p className="py-8 text-center text-sm text-neutral-500">
+          <p className="py-8 text-center text-sm text-muted-foreground">
             Aún no hay clientes. Crea el primero con “+ Nuevo cliente”.
           </p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral-200 text-left text-neutral-500">
+              <tr className="border-b border-border text-left text-muted-foreground">
                 <th className="px-4 py-2">Nombre</th>
                 <th>Contacto</th>
                 <th></th>
@@ -92,16 +92,16 @@ export function ClientesPanel({ clientes }: { clientes: Cliente[] }) {
             </thead>
             <tbody>
               {clientes.map((c) => (
-                <tr key={c.id} className="border-b border-neutral-100">
+                <tr key={c.id} className="border-b border-border/60">
                   <td className="px-4 py-2 font-medium">{c.nombre}</td>
-                  <td className="text-neutral-500">{c.telefono ?? c.direccion ?? "—"}</td>
+                  <td className="text-muted-foreground">{c.telefono ?? c.direccion ?? "—"}</td>
                   <td className="px-4 text-right">
-                    <button onClick={() => editar(c)} className="text-amber-700 hover:underline">
+                    <button onClick={() => editar(c)} className="text-primary hover:underline">
                       Editar
                     </button>
                     <button
                       onClick={() => desactivar(c.id)}
-                      className="ml-3 text-neutral-400 hover:text-red-600"
+                      className="ml-3 text-muted-foreground hover:text-destructive"
                     >
                       Eliminar
                     </button>
@@ -119,11 +119,11 @@ export function ClientesPanel({ clientes }: { clientes: Cliente[] }) {
 function Campo({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <label className="text-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+        className="mt-1 w-full rounded-lg border border-input px-3 py-2"
       />
     </label>
   );

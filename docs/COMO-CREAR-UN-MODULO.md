@@ -34,6 +34,23 @@ modules/<slug>/
    Si el módulo sale de una app real, parte con los campos que esa app
    realmente usa. Se agregan cuando un cliente real los pide.
 
+6. **Solo tokens semánticos en la UI, nunca colores fijos.** Cada app de
+   cliente lleva su propia paleta partiendo de la misma base: si un panel
+   usa `neutral-200`, se queda gris cuando el cliente cambia su tema, y
+   hay que corregirlo app por app.
+
+   | En vez de | Usa |
+   |---|---|
+   | `border-neutral-200` | `border-border` |
+   | `border-neutral-300` (inputs) | `border-input` |
+   | `text-neutral-500` / `-400` | `text-muted-foreground` |
+   | `bg-neutral-900` + `text-white` | `bg-primary` + `text-primary-foreground` |
+   | `text-amber-700` (acciones) | `text-primary` |
+   | `hover:text-red-600` | `hover:text-destructive` |
+
+   Lo mismo con el radio: `rounded-lg` sale de `--radius`, no lo fijes en
+   píxeles.
+
 ## Criterio de graduación
 
 Antes de que algo entre a `modules/`, tiene que cumplir las dos condiciones

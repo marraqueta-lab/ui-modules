@@ -48,34 +48,34 @@ export function RecetasPanel({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Recetas</h1>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-muted-foreground">
             Qué ingredientes lleva cada producto y cuánto cuesta producirlo.
           </p>
         </div>
         <button
           onClick={nueva}
           disabled={productos.length === 0}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
         >
           + Nueva receta
         </button>
       </div>
 
       {productos.length === 0 && (
-        <p className="rounded-lg border border-neutral-200 p-4 text-sm text-neutral-500">
+        <p className="rounded-lg border border-border p-4 text-sm text-muted-foreground">
           Primero crea al menos un producto.
         </p>
       )}
 
       {form && (
-        <div className="rounded-lg border border-neutral-200 p-4">
+        <div className="rounded-lg border border-border p-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label className="text-sm">
-              <span className="text-neutral-500">Producto</span>
+              <span className="text-muted-foreground">Producto</span>
               <select
                 value={form.producto_id}
                 onChange={(e) => setForm({ ...form, producto_id: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-input px-3 py-2"
               >
                 {productos.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -101,11 +101,11 @@ export function RecetasPanel({
             <button
               onClick={guardar}
               disabled={pending || !form.nombre || !form.producto_id}
-              className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+              className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
             >
               {pending ? "Guardando…" : "Guardar"}
             </button>
-            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-neutral-500">
+            <button onClick={() => setForm(null)} className="rounded-lg px-3 py-2 text-sm text-muted-foreground">
               Cancelar
             </button>
           </div>
@@ -114,7 +114,7 @@ export function RecetasPanel({
 
       <div className="space-y-3">
         {recetas.length === 0 ? (
-          <p className="rounded-lg border border-neutral-200 py-8 text-center text-sm text-neutral-500">
+          <p className="rounded-lg border border-border py-8 text-center text-sm text-muted-foreground">
             Aún no hay recetas.
           </p>
         ) : (
@@ -122,11 +122,11 @@ export function RecetasPanel({
             const costo = costoReceta(r);
             const unitario = costoUnitario(r);
             return (
-              <div key={r.id} className="rounded-lg border border-neutral-200">
+              <div key={r.id} className="rounded-lg border border-border">
                 <div className="flex items-center justify-between p-4">
                   <div>
                     <p className="font-medium">{r.nombre}</p>
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-muted-foreground">
                       {r.producto?.nombre ?? "—"}
                       {r.rinde ? ` · rinde ${r.rinde} ${r.rinde_unidad ?? ""}` : ""}
                     </p>
@@ -135,18 +135,18 @@ export function RecetasPanel({
                     <div className="text-right">
                       <p className="font-medium">${Math.round(costo)}</p>
                       {unitario !== null && (
-                        <p className="text-neutral-500">${Math.round(unitario)} c/u</p>
+                        <p className="text-muted-foreground">${Math.round(unitario)} c/u</p>
                       )}
                     </div>
                     <button
                       onClick={() => setAbierta(abierta === r.id ? null : r.id)}
-                      className="text-amber-700 hover:underline"
+                      className="text-primary hover:underline"
                     >
                       {abierta === r.id ? "Cerrar" : "Ingredientes"}
                     </button>
                     <button
                       onClick={() => startTransition(() => accionDesactivarReceta(r.id))}
-                      className="text-neutral-400 hover:text-red-600"
+                      className="text-muted-foreground hover:text-destructive"
                     >
                       Eliminar
                     </button>
@@ -190,13 +190,13 @@ function IngredientesDeReceta({
   }
 
   return (
-    <div className="border-t border-neutral-200 p-4">
+    <div className="border-t border-border p-4">
       <table className="w-full text-sm">
         <tbody>
           {(receta.receta_ingredientes ?? []).map((ri) => (
-            <tr key={ri.id} className="border-b border-neutral-100">
+            <tr key={ri.id} className="border-b border-border/60">
               <td className="py-2">{ri.ingrediente?.nombre ?? "—"}</td>
-              <td className="text-right text-neutral-500">
+              <td className="text-right text-muted-foreground">
                 {ri.cantidad} {ri.ingrediente?.unidad ?? ""}
               </td>
               <td className="text-right">
@@ -205,7 +205,7 @@ function IngredientesDeReceta({
               <td className="text-right">
                 <button
                   onClick={() => startTransition(() => accionQuitarIngredienteDeReceta(ri.id))}
-                  className="text-neutral-400 hover:text-red-600"
+                  className="text-muted-foreground hover:text-destructive"
                 >
                   Quitar
                 </button>
@@ -217,11 +217,11 @@ function IngredientesDeReceta({
 
       <div className="mt-3 flex items-end gap-2">
         <label className="text-sm">
-          <span className="text-neutral-500">Ingrediente</span>
+          <span className="text-muted-foreground">Ingrediente</span>
           <select
             value={ingredienteId}
             onChange={(e) => setIngredienteId(e.target.value)}
-            className="mt-1 rounded-lg border border-neutral-300 px-3 py-2"
+            className="mt-1 rounded-lg border border-input px-3 py-2"
           >
             {ingredientes.map((i) => (
               <option key={i.id} value={i.id}>
@@ -231,18 +231,18 @@ function IngredientesDeReceta({
           </select>
         </label>
         <label className="text-sm">
-          <span className="text-neutral-500">Cantidad</span>
+          <span className="text-muted-foreground">Cantidad</span>
           <input
             type="number"
             value={cantidad}
             onChange={(e) => setCantidad(e.target.value)}
-            className="mt-1 w-28 rounded-lg border border-neutral-300 px-3 py-2"
+            className="mt-1 w-28 rounded-lg border border-input px-3 py-2"
           />
         </label>
         <button
           onClick={agregar}
           disabled={pending || !cantidad}
-          className="rounded-lg bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-50"
+          className="rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
         >
           Agregar
         </button>
@@ -264,12 +264,12 @@ function Campo({
 }) {
   return (
     <label className="text-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2"
+        className="mt-1 w-full rounded-lg border border-input px-3 py-2"
       />
     </label>
   );

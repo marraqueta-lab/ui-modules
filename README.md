@@ -6,7 +6,7 @@ la consume como dependencia, fijada a un tag específico — nunca a `main`.
 ```json
 {
   "dependencies": {
-    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.2.0"
+    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.3.0"
   }
 }
 ```
@@ -89,7 +89,18 @@ Sin estas tres cosas el build falla:
    Los módulos importan `@core/supabase/server`, `@core/auth/session`,
    etc. `template-app` ya lo trae.
 
-3. **Variables de Supabase presentes al construir**
+3. **`@source` en `globals.css`**, apuntando al paquete:
+
+   ```css
+   @source "../node_modules/@marraqueta/ui-modules";
+   ```
+
+   Tailwind no escanea `node_modules` por defecto. Sin esta línea las
+   clases de los paneles **no generan CSS** y se renderizan sin estilos.
+   Ojo: el build, el typecheck y el lint pasan igual — el error solo se
+   ve en pantalla.
+
+4. **Variables de Supabase presentes al construir**
    (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`), incluido
    el CI. Los módulos las leen al crear el cliente.
 
