@@ -6,7 +6,7 @@ la consume como dependencia, fijada a un tag específico — nunca a `main`.
 ```json
 {
   "dependencies": {
-    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.1.0"
+    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.1.1"
   }
 }
 ```
