@@ -42,11 +42,45 @@ infraestructura del proyecto.
   pero no en `modules/`, es porque todavía no cumple el criterio de
   graduación — no es una promesa de que se va a construir.
 
-## Cómo se consume `@core/...` dentro de un módulo
+## Qué necesita la app consumidora
 
-Los módulos importan rutas como `@core/supabase/server` asumiendo que la
-app consumidora define ese alias en su propio `tsconfig.json` (apuntando a
-su carpeta `core/`) y agrega este paquete a `transpilePackages` en
-`next.config.ts` — porque `ui-modules` se distribuye como TypeScript sin
-compilar, no como paquete publicado. `template-app` trae esa configuración
-una vez que el `core` del kit se incorpore ahí.
+Verificado consumiendo `clientes` desde `template-app` de punta a punta.
+Sin estas tres cosas el build falla:
+
+1. **`transpilePackages` en `next.config.ts`:**
+
+   ```ts
+   const nextConfig: NextConfig = {
+     transpilePackages: ["@marraqueta/ui-modules"],
+   };
+   ```
+
+   Sin esto Turbopack tira `Module not found` al resolver el subpath —
+   Next.js no compila `node_modules` por defecto y acá se distribuye
+   TypeScript sin compilar.
+
+2. **Alias `@core/*` en `tsconfig.json`**, apuntando a la carpeta `core/`
+   de la app:
+
+   ```json
+   "paths": { "@core/*": ["./core/*"] }
+   ```
+
+   Los módulos importan `@core/supabase/server`, `@core/auth/session`,
+   etc. `template-app` ya lo trae.
+
+3. **Variables de Supabase presentes al construir**
+   (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`), incluido
+   el CI. Los módulos las leen al crear el cliente.
+
+Las páginas que consumen un módulo quedan **dinámicas** automáticamente
+(`ƒ` en el output del build), porque el cliente de Supabase lee cookies.
+Es lo correcto para pantallas autenticadas — no hay que forzar nada.
+
+## Nota sobre instalación local
+
+Si pruebas la biblioteca con una dependencia de path, usa
+`npm install ../ui-modules --install-links`. Sin `--install-links` npm crea
+un symlink y Turbopack no resuelve el paquete. Un install real desde
+`github:` copia los archivos, así que este problema es solo del flujo
+local.

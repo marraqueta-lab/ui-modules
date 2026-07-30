@@ -1,0 +1,12 @@
+{
+  "name": "@marraqueta/ui-modules",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Biblioteca de módulos reutilizables de Marraqueta Lab",
+  "license": "UNLICENSED",
+  "peerDependencies": {
+    "@supabase/ssr": "^0.12.0",
+    "next": ">=16",
+    "react": ">=19"
+  }
+}
