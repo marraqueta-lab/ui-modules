@@ -28,3 +28,10 @@ create policy "productos por empresa"
   to authenticated
   using (empresa_id in (select empresa_id from perfiles where id = auth.uid()))
   with check (empresa_id in (select empresa_id from perfiles where id = auth.uid()));
+
+-- Permisos de tabla. La RLS filtra QUE filas se ven, pero primero el rol
+-- necesita permiso sobre la tabla: sin esto, la consulta muere con
+-- "permission denied" antes de evaluar ninguna policy. No se hereda de las
+-- default privileges: las del rol `postgres` en `public` solo dan
+-- TRUNCATE/REFERENCES/TRIGGER, no SELECT/INSERT/UPDATE/DELETE.
+grant select, insert, update, delete on table productos to authenticated;

@@ -20,6 +20,18 @@ modules/<slug>/
 
 1. **Multi-empresa siempre.** Toda tabla lleva `empresa_id` y RLS filtrando
    por la empresa del usuario. Copia el patrón de `modules/clientes/schema.sql`.
+
+   Y **el `grant` al final no es opcional**:
+
+   ```sql
+   grant select, insert, update, delete on table <tabla> to authenticated;
+   ```
+
+   La RLS decide *qué filas* se ven; el `grant` decide si el rol puede
+   tocar la tabla siquiera. Sin él, la consulta muere con
+   `permission denied` antes de evaluar ninguna policy — y no se hereda:
+   las default privileges del rol `postgres` en `public` solo otorgan
+   TRUNCATE/REFERENCES/TRIGGER.
 2. **Lógica en el servidor.** Acceso a datos y reglas de negocio viven en
    `lib/*-db.ts` y `actions.ts`, no en el componente cliente.
 3. **Permisos verificados en el servidor, dentro de cada action** — no solo

@@ -6,7 +6,7 @@ la consume como dependencia, fijada a un tag específico — nunca a `main`.
 ```json
 {
   "dependencies": {
-    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.3.0"
+    "@marraqueta/ui-modules": "github:marraqueta-lab/ui-modules#v0.3.1"
   }
 }
 ```
@@ -51,6 +51,26 @@ calculado desde el cliente es un total en el que no se puede confiar:
 - `pedidos.total` — trigger que suma las líneas ante cualquier cambio.
 - `ingredientes.precio_unit` — trigger desde la última compra.
 - `ingredientes.stock` — trigger desde el último conteo.
+
+## Validar los esquemas
+
+`validar-esquemas.sql` comprueba contra un Postgres real que la RLS aísle,
+que los triggers no crucen empresas y que las columnas generadas calculen
+bien. Requiere Docker:
+
+```bash
+# en el repo de la app consumidora
+npx supabase start
+npx supabase db reset                       # aplica el esquema base
+
+# aplicar los schema.sql de los módulos en orden de dependencia, y después:
+docker exec -i supabase_db_<proyecto> psql -U postgres -d postgres \
+  < ../ui-modules/validar-esquemas.sql
+```
+
+Son 14 comprobaciones. Cualquiera que falle corta con `FALLA` y el detalle.
+Vale la pena correrlo al agregar un módulo nuevo: el error típico —olvidar
+el `grant`— pasa desapercibido en el código y solo aparece en pantalla.
 
 ## Qué NO trae
 

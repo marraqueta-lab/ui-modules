@@ -54,3 +54,10 @@ drop trigger if exists trigger_sync_precio_ingrediente on compras;
 create trigger trigger_sync_precio_ingrediente
   after insert on compras
   for each row execute function public.sync_precio_ingrediente();
+
+-- Permisos de tabla. La RLS filtra QUE filas se ven, pero primero el rol
+-- necesita permiso sobre la tabla: sin esto, la consulta muere con
+-- "permission denied" antes de evaluar ninguna policy. No se hereda de las
+-- default privileges: las del rol `postgres` en `public` solo dan
+-- TRUNCATE/REFERENCES/TRIGGER, no SELECT/INSERT/UPDATE/DELETE.
+grant select, insert, update, delete on table compras to authenticated;

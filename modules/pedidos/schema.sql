@@ -88,3 +88,10 @@ drop trigger if exists trigger_sync_total_pedido on pedido_items;
 create trigger trigger_sync_total_pedido
   after insert or update or delete on pedido_items
   for each row execute function public.sync_total_pedido();
+
+-- Permisos de tabla. La RLS filtra QUE filas se ven, pero primero el rol
+-- necesita permiso sobre la tabla: sin esto, la consulta muere con
+-- "permission denied" antes de evaluar ninguna policy. No se hereda de las
+-- default privileges: las del rol `postgres` en `public` solo dan
+-- TRUNCATE/REFERENCES/TRIGGER, no SELECT/INSERT/UPDATE/DELETE.
+grant select, insert, update, delete on table pedidos, pedido_items to authenticated;
